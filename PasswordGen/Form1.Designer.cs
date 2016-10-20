@@ -40,6 +40,20 @@
             this.label3 = new System.Windows.Forms.Label();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.allInClusiveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bothToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.englishToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bothToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.upperCaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lowerCaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cyrillicToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bothToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.upperCaseToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.lowerCaseToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.digitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.symbolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -55,7 +69,7 @@
             // textBox1
             // 
             this.textBox1.Location = new System.Drawing.Point(139, 60);
-            this.textBox1.MaxLength = 4;
+            this.textBox1.MaxLength = 5;
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(55, 20);
             this.textBox1.TabIndex = 1;
@@ -69,6 +83,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.richTextBox1.BackColor = System.Drawing.SystemColors.Info;
+            this.richTextBox1.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.richTextBox1.Location = new System.Drawing.Point(16, 99);
             this.richTextBox1.MaxLength = 10000;
             this.richTextBox1.Name = "richTextBox1";
@@ -164,6 +179,126 @@
             this.linkLabel1.Text = "dmitriy.rudov@list.ru";
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.allInClusiveToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(295, 24);
+            this.menuStrip1.TabIndex = 10;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // allInClusiveToolStripMenuItem
+            // 
+            this.allInClusiveToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.bothToolStripMenuItem,
+            this.englishToolStripMenuItem,
+            this.cyrillicToolStripMenuItem,
+            this.digitToolStripMenuItem,
+            this.symbolToolStripMenuItem});
+            this.allInClusiveToolStripMenuItem.Name = "allInClusiveToolStripMenuItem";
+            this.allInClusiveToolStripMenuItem.Size = new System.Drawing.Size(64, 20);
+            this.allInClusiveToolStripMenuItem.Text = "Наборы";
+            // 
+            // bothToolStripMenuItem
+            // 
+            this.bothToolStripMenuItem.CheckOnClick = true;
+            this.bothToolStripMenuItem.Name = "bothToolStripMenuItem";
+            this.bothToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.bothToolStripMenuItem.Text = "Все";
+            this.bothToolStripMenuItem.Click += new System.EventHandler(this.bothToolStripMenuItem_Click);
+            // 
+            // englishToolStripMenuItem
+            // 
+            this.englishToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.bothToolStripMenuItem1,
+            this.upperCaseToolStripMenuItem,
+            this.lowerCaseToolStripMenuItem});
+            this.englishToolStripMenuItem.Name = "englishToolStripMenuItem";
+            this.englishToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.englishToolStripMenuItem.Text = "English";
+            // 
+            // bothToolStripMenuItem1
+            // 
+            this.bothToolStripMenuItem1.Checked = true;
+            this.bothToolStripMenuItem1.CheckOnClick = true;
+            this.bothToolStripMenuItem1.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.bothToolStripMenuItem1.Name = "bothToolStripMenuItem1";
+            this.bothToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.bothToolStripMenuItem1.Text = "Все";
+            this.bothToolStripMenuItem1.Click += new System.EventHandler(this.bothToolStripMenuItem1_Click);
+            // 
+            // upperCaseToolStripMenuItem
+            // 
+            this.upperCaseToolStripMenuItem.CheckOnClick = true;
+            this.upperCaseToolStripMenuItem.Name = "upperCaseToolStripMenuItem";
+            this.upperCaseToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.upperCaseToolStripMenuItem.Text = "Заглавные";
+            this.upperCaseToolStripMenuItem.Click += new System.EventHandler(this.upperCaseToolStripMenuItem_Click);
+            // 
+            // lowerCaseToolStripMenuItem
+            // 
+            this.lowerCaseToolStripMenuItem.CheckOnClick = true;
+            this.lowerCaseToolStripMenuItem.Name = "lowerCaseToolStripMenuItem";
+            this.lowerCaseToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.lowerCaseToolStripMenuItem.Text = "Прописные";
+            this.lowerCaseToolStripMenuItem.Click += new System.EventHandler(this.lowerCaseToolStripMenuItem_Click);
+            // 
+            // cyrillicToolStripMenuItem
+            // 
+            this.cyrillicToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.bothToolStripMenuItem2,
+            this.upperCaseToolStripMenuItem1,
+            this.lowerCaseToolStripMenuItem1});
+            this.cyrillicToolStripMenuItem.Name = "cyrillicToolStripMenuItem";
+            this.cyrillicToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.cyrillicToolStripMenuItem.Text = "Кирилица";
+            // 
+            // bothToolStripMenuItem2
+            // 
+            this.bothToolStripMenuItem2.CheckOnClick = true;
+            this.bothToolStripMenuItem2.Name = "bothToolStripMenuItem2";
+            this.bothToolStripMenuItem2.Size = new System.Drawing.Size(152, 22);
+            this.bothToolStripMenuItem2.Text = "Все";
+            this.bothToolStripMenuItem2.Click += new System.EventHandler(this.bothToolStripMenuItem2_Click);
+            // 
+            // upperCaseToolStripMenuItem1
+            // 
+            this.upperCaseToolStripMenuItem1.CheckOnClick = true;
+            this.upperCaseToolStripMenuItem1.Name = "upperCaseToolStripMenuItem1";
+            this.upperCaseToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.upperCaseToolStripMenuItem1.Text = "Заглавные";
+            this.upperCaseToolStripMenuItem1.Click += new System.EventHandler(this.upperCaseToolStripMenuItem1_Click);
+            // 
+            // lowerCaseToolStripMenuItem1
+            // 
+            this.lowerCaseToolStripMenuItem1.CheckOnClick = true;
+            this.lowerCaseToolStripMenuItem1.Name = "lowerCaseToolStripMenuItem1";
+            this.lowerCaseToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.lowerCaseToolStripMenuItem1.Text = "Прописные";
+            this.lowerCaseToolStripMenuItem1.Click += new System.EventHandler(this.lowerCaseToolStripMenuItem1_Click);
+            // 
+            // digitToolStripMenuItem
+            // 
+            this.digitToolStripMenuItem.Checked = true;
+            this.digitToolStripMenuItem.CheckOnClick = true;
+            this.digitToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.digitToolStripMenuItem.Name = "digitToolStripMenuItem";
+            this.digitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.digitToolStripMenuItem.Text = "Цифры";
+            this.digitToolStripMenuItem.Click += new System.EventHandler(this.digitToolStripMenuItem_Click);
+            // 
+            // symbolToolStripMenuItem
+            // 
+            this.symbolToolStripMenuItem.Checked = true;
+            this.symbolToolStripMenuItem.CheckOnClick = true;
+            this.symbolToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.symbolToolStripMenuItem.Name = "symbolToolStripMenuItem";
+            this.symbolToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.symbolToolStripMenuItem.Text = "Символы";
+            this.symbolToolStripMenuItem.Click += new System.EventHandler(this.symbolToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -180,11 +315,14 @@
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label1);
+            this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximumSize = new System.Drawing.Size(800, 700);
             this.MinimumSize = new System.Drawing.Size(310, 320);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -203,6 +341,19 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem allInClusiveToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem bothToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem englishToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cyrillicToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem digitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem symbolToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem bothToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem upperCaseToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem lowerCaseToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem bothToolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem upperCaseToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem lowerCaseToolStripMenuItem1;
     }
 }
 
