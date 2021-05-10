@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Рудов Дмитрий")]
 [assembly: AssemblyProduct("PasswordGen")]
-[assembly: AssemblyCopyright("Рудов Дмитрий ©  2016")]
+[assembly: AssemblyCopyright("Рудов Дмитрий ©  2016-2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

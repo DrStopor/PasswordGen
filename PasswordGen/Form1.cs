@@ -10,11 +10,173 @@ using System.Windows.Forms;
 using System.Threading;
 using System.IO;
 using System.Diagnostics;
+using PasswordGen.buildSymbols;
+using PasswordGen.randomize;
 
 namespace PasswordGen
 {
     public partial class Form1 : Form
     {
+        private bool selectEngLarge = false;
+        private bool selectEngSmall = false;
+        private bool selectRusLarge = false;
+        private bool selectRusSmall = false;
+        private bool selectNumber = false;
+        private bool selectSymbol = false;
+        private bool selectAll = false;
+        private bool selectBothEng = false;
+        private bool selectBothRus = false;
+
+        private const string nameSelectedEngLarge = "engLarge";
+        private const string nameSelectedEngSmall = "ensSmall";
+        private const string nameSelectedRusLarge = "rusLarge";
+        private const string nameSelectedRusSmall = "rusSmall";
+        private const string nameSelectedNumber = "number";
+        private const string nameSelectedSymbol = "symbol";
+
+        private string genarateWorker(List<char> readyListChars, int maxLong)
+        {
+            NumberGenerate rand = new NumberGenerate(readyListChars.Count);
+            string result = default;
+            for (int i = 0, end = maxLong + 1; i < end; i++)
+            {
+                int randNumber = rand.GetOne();
+                result += readyListChars[randNumber];
+            }
+            return result;
+        }
+
+        private void engBothCheckMenu_Click(object sender, EventArgs e)
+        {
+            if (engBothCheckMenu.Checked)
+            {
+                fullCheckMenu.Checked = false;
+                engLargeCheckMenu.Checked = false;
+                engSmallCheckMenu.Checked = false;
+            }
+
+            if (engBothCheckMenu.Checked
+                && rusBothCheckMenu.Checked
+                && digitCheckMenu.Checked
+                && symbolCheckMenu.Checked)
+                fullCheckMenu.Checked = true;
+            lamerCheckEngBoth();
+            checkCheked();
+        }
+
+        private void checkBoxMenuSelecting()
+        {
+            selectEngLarge = engLargeCheckMenu.Checked;
+            selectEngSmall = engSmallCheckMenu.Checked;
+            selectRusLarge = rusLargeCheckMenu.Checked;
+            selectRusSmall = rusSmallCheckMenu.Checked;
+            selectNumber = digitCheckMenu.Checked;
+            selectSymbol = symbolCheckMenu.Checked;
+            selectAll = checkBoxCollision(selectEngLarge, selectEngSmall, selectRusLarge, selectRusSmall, selectNumber, selectSymbol);
+            selectBothEng = checkBoxCollision(selectEngLarge, selectEngSmall);
+            selectBothRus = checkBoxCollision(selectRusLarge, selectRusSmall);
+
+            if (selectAll)
+            {
+                engSmallCheckMenu.Checked = !selectEngLarge;
+                rusLargeCheckMenu.Checked = !selectEngSmall;
+                engLargeCheckMenu.Checked = !selectRusLarge;
+                rusSmallCheckMenu.Checked = !selectRusSmall;
+                digitCheckMenu.Checked = !selectNumber;
+                symbolCheckMenu.Checked = !selectSymbol;
+                rusBothCheckMenu.Checked = true;
+                engBothCheckMenu.Checked = true;
+            }
+
+            if (selectBothEng || engBothCheckMenu.Checked)
+            {
+                engLargeCheckMenu.Checked = !selectEngLarge;
+                engSmallCheckMenu.Checked = !selectEngSmall;
+            }
+
+            if (selectBothRus || rusBothCheckMenu.Checked)
+            {
+                rusLargeCheckMenu.Checked = !selectRusLarge;
+                rusSmallCheckMenu.Checked = !selectRusSmall;
+            }
+        }
+
+        private bool checkBoxCollision(bool one, bool two, bool three, bool four, bool five, bool six)
+        {
+            return (one && two && three && four && five && six);
+        }
+        private bool checkBoxCollision(bool one, bool two)
+        {
+            return one && two;
+        }
+
+        private Array createListLanguage()
+        {
+            List<string> result = new List<string>();
+
+            if (selectAll)
+            {
+                addAllNameToList(result);
+            }
+            else
+            {
+                if (selectBothEng)
+                {
+                    result.Add(nameSelectedEngLarge);
+                    result.Add(nameSelectedEngSmall);
+                }
+                else
+                {
+                    addOneNameEng(result);
+                }
+
+                if (selectBothRus)
+                {
+                    result.Add(nameSelectedRusLarge);
+                    result.Add(nameSelectedRusSmall);
+                }
+                else
+                {
+                    addOneNameRus(result);
+                }
+
+                if (selectNumber)
+                    result.Add(nameSelectedNumber);
+
+                if (selectSymbol)
+                    result.Add(nameSelectedSymbol);
+            }
+            return result.ToArray();
+        }
+
+        private void addOneNameRus(List<string> result)
+        {
+            if (selectRusLarge)
+                result.Add(nameSelectedRusLarge);
+
+            if (selectRusSmall)
+                result.Add(nameSelectedRusSmall);
+        }
+
+        private void addOneNameEng(List<string> result)
+        {
+            if (selectEngLarge)
+                result.Add(nameSelectedEngLarge);
+
+            if (selectEngSmall)
+                result.Add(nameSelectedEngSmall);
+        }
+
+        private static void addAllNameToList(List<string> result)
+        {
+            result.Add(nameSelectedEngLarge);
+            result.Add(nameSelectedEngSmall);
+            result.Add(nameSelectedRusLarge);
+            result.Add(nameSelectedRusSmall);
+            result.Add(nameSelectedNumber);
+            result.Add(nameSelectedSymbol);
+        }
+
         public Form1()
         {
             InitializeComponent();
@@ -37,22 +199,30 @@ namespace PasswordGen
 
         private void button1_Click(object sender, EventArgs e)
         {
+            checkBoxMenuSelecting();
             if (textBox2.TextLength < 1)
             {
-                checkBox1.Checked = false;
+                setAutoSave.Checked = false;
             }
+
+            string[] arrayAddedSymbols = (string[])createListLanguage();
+            int lengthPass = int.Parse(setLengthString.Text);
+            string iPass = "";
+            var objectSymbols = new BuildingSymbols(arrayAddedSymbols);
+            var tmp = objectSymbols.GetListSetSymbols();
+            iPass = genarateWorker(tmp, lengthPass);
 
             richTextBox1.Clear();
 
-            int dlina = int.Parse(textBox1.Text);
+            //int dlina = int.Parse(setLengthString.Text);
 
-            string iPass = "";
+            
 
-            passwordHashing(ref iPass, dlina);
+            //passwordHashing(ref iPass, dlina);
 
             richTextBox1.SelectedText = iPass;
 
-            if (checkBox1.Checked && !textBox2.ReadOnly)
+            if (setAutoSave.Checked && !textBox2.ReadOnly)
             {
                 string imaja = textBox2.Text + ".txt";
                 File.AppendAllText(imaja, Environment.NewLine + iPass + Environment.NewLine);
@@ -61,7 +231,7 @@ namespace PasswordGen
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBox1.Checked)
+            if (setAutoSave.Checked)
             {
                 textBox2.ReadOnly = false;
             }
@@ -128,8 +298,8 @@ namespace PasswordGen
 
             for (int i = 0; i < dlina; i++)
             {
-                    iPass += (char)rnd.Next(33, 127);
-                    Thread.Sleep(1);
+                iPass += (char)rnd.Next(33, 127);
+                Thread.Sleep(1);
             }
 
         }
@@ -523,7 +693,7 @@ namespace PasswordGen
                     iPass += (char)digChar();
                 }
             }
-        }       
+        }
 
         /// <summary>
         /// англ.все и символы
@@ -1092,10 +1262,11 @@ namespace PasswordGen
                 {
                     iPass += (char)cyrUp();
                 }
-                else if(change == 2)
+                else if (change == 2)
                 {
                     iPass += (char)digChar();
-                }else
+                }
+                else
                     iPass += (char)symbChar();
             }
         }
@@ -1259,7 +1430,7 @@ namespace PasswordGen
         {
             Random rnd = new Random(unchecked((int)DateTime.Now.Ticks));
             int change;
-            for(int i = 0; i < dlina; i++)
+            for (int i = 0; i < dlina; i++)
             {
                 change = rnd.Next(0, 2);
                 Thread.Sleep(1);
@@ -1557,9 +1728,9 @@ namespace PasswordGen
             Random rnd = new Random(unchecked((int)DateTime.Now.Ticks));
 
             for (int i = 0; i < dlina; i++)
-            {                
-                 iPass += (char)digChar();
-                
+            {
+                iPass += (char)digChar();
+
             }
         }
 
@@ -1707,29 +1878,29 @@ namespace PasswordGen
 
             return symbol;
         }
-        
+
         /// <summary>
         /// применение условия "все", если по отдельности выбраны параметры подподающие под это правило
         /// </summary>
         private void checkCheked()
         {
-            if(bothToolStripMenuItem1.Checked && bothToolStripMenuItem2.Checked && digitToolStripMenuItem.Checked && symbolToolStripMenuItem.Checked)
+            if (engBothCheckMenu.Checked && rusBothCheckMenu.Checked && digitCheckMenu.Checked && symbolCheckMenu.Checked)
             {
-                bothToolStripMenuItem.Checked = true;
-                bothToolStripMenuItem1.Checked = false;
-                bothToolStripMenuItem2.Checked = false;
-                digitToolStripMenuItem.Checked = false;
-                symbolToolStripMenuItem.Checked = false;
+                fullCheckMenu.Checked = true;
+                engBothCheckMenu.Checked = false;
+                rusBothCheckMenu.Checked = false;
+                digitCheckMenu.Checked = false;
+                symbolCheckMenu.Checked = false;
             }
         }
-        
+
         /// <summary>
         /// проверка на ошибочное отключение всех наборов, кнопка "все"
         /// </summary>
         private void lamerCheckAll()
         {
-            if (!bothToolStripMenuItem.Checked && !bothToolStripMenuItem1.Checked && !bothToolStripMenuItem2.Checked && !upperCaseToolStripMenuItem.Checked && !upperCaseToolStripMenuItem1.Checked & !lowerCaseToolStripMenuItem.Checked && !lowerCaseToolStripMenuItem1.Checked && !digitToolStripMenuItem.Checked && !symbolToolStripMenuItem.Checked)
-                bothToolStripMenuItem.Checked = true;
+            if (!fullCheckMenu.Checked && !engBothCheckMenu.Checked && !rusBothCheckMenu.Checked && !engLargeCheckMenu.Checked && !rusLargeCheckMenu.Checked & !engSmallCheckMenu.Checked && !rusSmallCheckMenu.Checked && !digitCheckMenu.Checked && !symbolCheckMenu.Checked)
+                fullCheckMenu.Checked = true;
         }
 
         /// <summary>
@@ -1737,8 +1908,8 @@ namespace PasswordGen
         /// </summary>
         private void lamerCheckEngBoth()
         {
-            if (!bothToolStripMenuItem.Checked && !bothToolStripMenuItem1.Checked && !bothToolStripMenuItem2.Checked && !upperCaseToolStripMenuItem.Checked && !upperCaseToolStripMenuItem1.Checked & !lowerCaseToolStripMenuItem.Checked && !lowerCaseToolStripMenuItem1.Checked && !digitToolStripMenuItem.Checked && !symbolToolStripMenuItem.Checked)
-                bothToolStripMenuItem1.Checked = true;
+            if (!fullCheckMenu.Checked && !engBothCheckMenu.Checked && !rusBothCheckMenu.Checked && !engLargeCheckMenu.Checked && !rusLargeCheckMenu.Checked & !engSmallCheckMenu.Checked && !rusSmallCheckMenu.Checked && !digitCheckMenu.Checked && !symbolCheckMenu.Checked)
+                engBothCheckMenu.Checked = true;
         }
 
         /// <summary>
@@ -1746,8 +1917,8 @@ namespace PasswordGen
         /// </summary>
         private void lamerCheckCyrBoth()
         {
-            if (!bothToolStripMenuItem.Checked && !bothToolStripMenuItem1.Checked && !bothToolStripMenuItem2.Checked && !upperCaseToolStripMenuItem.Checked && !upperCaseToolStripMenuItem1.Checked & !lowerCaseToolStripMenuItem.Checked && !lowerCaseToolStripMenuItem1.Checked && !digitToolStripMenuItem.Checked && !symbolToolStripMenuItem.Checked)
-                bothToolStripMenuItem2.Checked = true;
+            if (!fullCheckMenu.Checked && !engBothCheckMenu.Checked && !rusBothCheckMenu.Checked && !engLargeCheckMenu.Checked && !rusLargeCheckMenu.Checked & !engSmallCheckMenu.Checked && !rusSmallCheckMenu.Checked && !digitCheckMenu.Checked && !symbolCheckMenu.Checked)
+                rusBothCheckMenu.Checked = true;
         }
 
         /// <summary>
@@ -1755,8 +1926,8 @@ namespace PasswordGen
         /// </summary>
         private void lamerCheckCyrUp()
         {
-            if (!bothToolStripMenuItem.Checked && !bothToolStripMenuItem1.Checked && !bothToolStripMenuItem2.Checked && !upperCaseToolStripMenuItem.Checked && !upperCaseToolStripMenuItem1.Checked & !lowerCaseToolStripMenuItem.Checked && !lowerCaseToolStripMenuItem1.Checked && !digitToolStripMenuItem.Checked && !symbolToolStripMenuItem.Checked)
-                upperCaseToolStripMenuItem1.Checked = true;
+            if (!fullCheckMenu.Checked && !engBothCheckMenu.Checked && !rusBothCheckMenu.Checked && !engLargeCheckMenu.Checked && !rusLargeCheckMenu.Checked & !engSmallCheckMenu.Checked && !rusSmallCheckMenu.Checked && !digitCheckMenu.Checked && !symbolCheckMenu.Checked)
+                rusLargeCheckMenu.Checked = true;
         }
 
         /// <summary>
@@ -1764,8 +1935,8 @@ namespace PasswordGen
         /// </summary>
         private void lamerCheckCyrLow()
         {
-            if (!bothToolStripMenuItem.Checked && !bothToolStripMenuItem1.Checked && !bothToolStripMenuItem2.Checked && !upperCaseToolStripMenuItem.Checked && !upperCaseToolStripMenuItem1.Checked & !lowerCaseToolStripMenuItem.Checked && !lowerCaseToolStripMenuItem1.Checked && !digitToolStripMenuItem.Checked && !symbolToolStripMenuItem.Checked)
-                lowerCaseToolStripMenuItem1.Checked = true;
+            if (!fullCheckMenu.Checked && !engBothCheckMenu.Checked && !rusBothCheckMenu.Checked && !engLargeCheckMenu.Checked && !rusLargeCheckMenu.Checked & !engSmallCheckMenu.Checked && !rusSmallCheckMenu.Checked && !digitCheckMenu.Checked && !symbolCheckMenu.Checked)
+                rusSmallCheckMenu.Checked = true;
         }
 
         /// <summary>
@@ -1773,8 +1944,8 @@ namespace PasswordGen
         /// </summary>
         private void lamerCheckEngUp()
         {
-            if (!bothToolStripMenuItem.Checked && !bothToolStripMenuItem1.Checked && !bothToolStripMenuItem2.Checked && !upperCaseToolStripMenuItem.Checked && !upperCaseToolStripMenuItem1.Checked & !lowerCaseToolStripMenuItem.Checked && !lowerCaseToolStripMenuItem1.Checked && !digitToolStripMenuItem.Checked && !symbolToolStripMenuItem.Checked)
-                upperCaseToolStripMenuItem.Checked = true;
+            if (!fullCheckMenu.Checked && !engBothCheckMenu.Checked && !rusBothCheckMenu.Checked && !engLargeCheckMenu.Checked && !rusLargeCheckMenu.Checked & !engSmallCheckMenu.Checked && !rusSmallCheckMenu.Checked && !digitCheckMenu.Checked && !symbolCheckMenu.Checked)
+                engLargeCheckMenu.Checked = true;
         }
 
         /// <summary>
@@ -1782,8 +1953,8 @@ namespace PasswordGen
         /// </summary>
         private void lamerCheckEngLow()
         {
-            if (!bothToolStripMenuItem.Checked && !bothToolStripMenuItem1.Checked && !bothToolStripMenuItem2.Checked && !upperCaseToolStripMenuItem.Checked && !upperCaseToolStripMenuItem1.Checked & !lowerCaseToolStripMenuItem.Checked && !lowerCaseToolStripMenuItem1.Checked && !digitToolStripMenuItem.Checked && !symbolToolStripMenuItem.Checked)
-                lowerCaseToolStripMenuItem.Checked = true;
+            if (!fullCheckMenu.Checked && !engBothCheckMenu.Checked && !rusBothCheckMenu.Checked && !engLargeCheckMenu.Checked && !rusLargeCheckMenu.Checked & !engSmallCheckMenu.Checked && !rusSmallCheckMenu.Checked && !digitCheckMenu.Checked && !symbolCheckMenu.Checked)
+                engSmallCheckMenu.Checked = true;
         }
 
         /// <summary>
@@ -1791,8 +1962,8 @@ namespace PasswordGen
         /// </summary>
         private void lamerCheckDig()
         {
-            if (!bothToolStripMenuItem.Checked && !bothToolStripMenuItem1.Checked && !bothToolStripMenuItem2.Checked && !upperCaseToolStripMenuItem.Checked && !upperCaseToolStripMenuItem1.Checked & !lowerCaseToolStripMenuItem.Checked && !lowerCaseToolStripMenuItem1.Checked && !digitToolStripMenuItem.Checked && !symbolToolStripMenuItem.Checked)
-                digitToolStripMenuItem.Checked = true;
+            if (!fullCheckMenu.Checked && !engBothCheckMenu.Checked && !rusBothCheckMenu.Checked && !engLargeCheckMenu.Checked && !rusLargeCheckMenu.Checked & !engSmallCheckMenu.Checked && !rusSmallCheckMenu.Checked && !digitCheckMenu.Checked && !symbolCheckMenu.Checked)
+                digitCheckMenu.Checked = true;
         }
 
         /// <summary>
@@ -1800,8 +1971,8 @@ namespace PasswordGen
         /// </summary>
         private void lamerCheckSymb()
         {
-            if (!bothToolStripMenuItem.Checked && !bothToolStripMenuItem1.Checked && !bothToolStripMenuItem2.Checked && !upperCaseToolStripMenuItem.Checked && !upperCaseToolStripMenuItem1.Checked & !lowerCaseToolStripMenuItem.Checked && !lowerCaseToolStripMenuItem1.Checked && !digitToolStripMenuItem.Checked && !symbolToolStripMenuItem.Checked)
-                symbolToolStripMenuItem.Checked = true;
+            if (!fullCheckMenu.Checked && !engBothCheckMenu.Checked && !rusBothCheckMenu.Checked && !engLargeCheckMenu.Checked && !rusLargeCheckMenu.Checked & !engSmallCheckMenu.Checked && !rusSmallCheckMenu.Checked && !digitCheckMenu.Checked && !symbolCheckMenu.Checked)
+                symbolCheckMenu.Checked = true;
         }
 
         /// <summary>
@@ -1811,43 +1982,24 @@ namespace PasswordGen
         /// <param name="e"></param>
         private void bothToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (bothToolStripMenuItem.Checked)
+            if (fullCheckMenu.Checked)
             {
-                bothToolStripMenuItem1.Checked = false;
-                bothToolStripMenuItem2.Checked = false;
-                upperCaseToolStripMenuItem.Checked = false;
-                upperCaseToolStripMenuItem1.Checked = false;
-                lowerCaseToolStripMenuItem.Checked = false;
-                lowerCaseToolStripMenuItem1.Checked = false;
-                digitToolStripMenuItem.Checked = false;
-                symbolToolStripMenuItem.Checked = false;
+                engBothCheckMenu.Checked = false;
+                rusBothCheckMenu.Checked = false;
+                engLargeCheckMenu.Checked = false;
+                rusLargeCheckMenu.Checked = false;
+                engSmallCheckMenu.Checked = false;
+                rusSmallCheckMenu.Checked = false;
+                digitCheckMenu.Checked = false;
+                symbolCheckMenu.Checked = false;
             }
-            else if (bothToolStripMenuItem1.Checked || bothToolStripMenuItem2.Checked || upperCaseToolStripMenuItem.Checked || upperCaseToolStripMenuItem1.Checked || lowerCaseToolStripMenuItem.Checked || lowerCaseToolStripMenuItem1.Checked || digitToolStripMenuItem.Checked || symbolToolStripMenuItem.Checked)
+            else if (engBothCheckMenu.Checked || rusBothCheckMenu.Checked || engLargeCheckMenu.Checked || rusLargeCheckMenu.Checked || engSmallCheckMenu.Checked || rusSmallCheckMenu.Checked || digitCheckMenu.Checked || symbolCheckMenu.Checked)
             {
-                bothToolStripMenuItem.Checked = false;
+                fullCheckMenu.Checked = false;
             }
-            
+
             lamerCheckAll();
 
-            checkCheked();
-        }
-
-        /// <summary>
-        /// кнопка "англ - все"
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void bothToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            if (bothToolStripMenuItem1.Checked)
-            {
-                bothToolStripMenuItem.Checked = false;
-                upperCaseToolStripMenuItem.Checked = false;
-                lowerCaseToolStripMenuItem.Checked = false;
-            }
-            else if (bothToolStripMenuItem1.Checked && bothToolStripMenuItem2.Checked && digitToolStripMenuItem.Checked && symbolToolStripMenuItem.Checked)
-                bothToolStripMenuItem.Checked = true;
-            lamerCheckEngBoth();
             checkCheked();
         }
 
@@ -1858,11 +2010,11 @@ namespace PasswordGen
         /// <param name="e"></param>
         private void upperCaseToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (upperCaseToolStripMenuItem.Checked)
+            if (engLargeCheckMenu.Checked)
             {
-                bothToolStripMenuItem.Checked = false;
-                bothToolStripMenuItem1.Checked = false;
-                lowerCaseToolStripMenuItem.Checked = false;
+                fullCheckMenu.Checked = false;
+                engBothCheckMenu.Checked = false;
+                engSmallCheckMenu.Checked = false;
             }
             lamerCheckEngUp();
             checkCheked();
@@ -1875,11 +2027,11 @@ namespace PasswordGen
         /// <param name="e"></param>
         private void lowerCaseToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (lowerCaseToolStripMenuItem.Checked)
+            if (engSmallCheckMenu.Checked)
             {
-                bothToolStripMenuItem.Checked = false;
-                upperCaseToolStripMenuItem.Checked = false;
-                bothToolStripMenuItem1.Checked = false;
+                fullCheckMenu.Checked = false;
+                engLargeCheckMenu.Checked = false;
+                engBothCheckMenu.Checked = false;
             }
             lamerCheckEngLow();
             checkCheked();
@@ -1892,14 +2044,14 @@ namespace PasswordGen
         /// <param name="e"></param>
         private void bothToolStripMenuItem2_Click(object sender, EventArgs e)
         {
-            if (bothToolStripMenuItem2.Checked)
+            if (rusBothCheckMenu.Checked)
             {
-                bothToolStripMenuItem.Checked = false;
-                upperCaseToolStripMenuItem1.Checked = false;
-                lowerCaseToolStripMenuItem1.Checked = false;
+                fullCheckMenu.Checked = false;
+                rusLargeCheckMenu.Checked = false;
+                rusSmallCheckMenu.Checked = false;
             }
-            else if (bothToolStripMenuItem1.Checked && bothToolStripMenuItem2.Checked && digitToolStripMenuItem.Checked && symbolToolStripMenuItem.Checked)
-                bothToolStripMenuItem.Checked = true;
+            else if (engBothCheckMenu.Checked && rusBothCheckMenu.Checked && digitCheckMenu.Checked && symbolCheckMenu.Checked)
+                fullCheckMenu.Checked = true;
             lamerCheckCyrBoth();
             checkCheked();
         }
@@ -1911,11 +2063,11 @@ namespace PasswordGen
         /// <param name="e"></param>
         private void upperCaseToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            if (upperCaseToolStripMenuItem1.Checked)
+            if (rusLargeCheckMenu.Checked)
             {
-                bothToolStripMenuItem.Checked = false;
-                bothToolStripMenuItem2.Checked = false;
-                lowerCaseToolStripMenuItem1.Checked = false;
+                fullCheckMenu.Checked = false;
+                rusBothCheckMenu.Checked = false;
+                rusSmallCheckMenu.Checked = false;
             }
             lamerCheckCyrUp();
             checkCheked();
@@ -1928,11 +2080,11 @@ namespace PasswordGen
         /// <param name="e"></param>
         private void lowerCaseToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            if (lowerCaseToolStripMenuItem1.Checked)
+            if (rusSmallCheckMenu.Checked)
             {
-                bothToolStripMenuItem.Checked = false;
-                bothToolStripMenuItem2.Checked = false;
-                upperCaseToolStripMenuItem1.Checked = false;
+                fullCheckMenu.Checked = false;
+                rusBothCheckMenu.Checked = false;
+                rusLargeCheckMenu.Checked = false;
             }
             lamerCheckCyrLow();
             checkCheked();
@@ -1945,12 +2097,12 @@ namespace PasswordGen
         /// <param name="e"></param>
         private void digitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (digitToolStripMenuItem.Checked)
+            if (digitCheckMenu.Checked)
             {
-                bothToolStripMenuItem.Checked = false;
+                fullCheckMenu.Checked = false;
             }
-            else if (bothToolStripMenuItem1.Checked && bothToolStripMenuItem2.Checked && digitToolStripMenuItem.Checked && symbolToolStripMenuItem.Checked)
-                bothToolStripMenuItem.Checked = true;
+            else if (engBothCheckMenu.Checked && rusBothCheckMenu.Checked && digitCheckMenu.Checked && symbolCheckMenu.Checked)
+                fullCheckMenu.Checked = true;
             lamerCheckDig();
             checkCheked();
         }
@@ -1962,202 +2114,19 @@ namespace PasswordGen
         /// <param name="e"></param>
         private void symbolToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (symbolToolStripMenuItem.Checked)
+            if (symbolCheckMenu.Checked)
             {
-                bothToolStripMenuItem.Checked = false;
+                fullCheckMenu.Checked = false;
             }
-            else if (bothToolStripMenuItem1.Checked && bothToolStripMenuItem2.Checked && digitToolStripMenuItem.Checked && symbolToolStripMenuItem.Checked)
-                bothToolStripMenuItem.Checked = true;
+            else if (engBothCheckMenu.Checked && rusBothCheckMenu.Checked && digitCheckMenu.Checked && symbolCheckMenu.Checked)
+                fullCheckMenu.Checked = true;
             lamerCheckSymb();
             checkCheked();
         }
 
-        private void passwordHashing(ref string iPass, int dlina)
+        private void Form1_Load(object sender, EventArgs e)
         {
-            if (bothToolStripMenuItem.Checked)
-            {
-                absolute(dlina, ref iPass);
-            }else if(bothToolStripMenuItem1.Checked && !bothToolStripMenuItem2.Checked && !upperCaseToolStripMenuItem1.Checked && !lowerCaseToolStripMenuItem1.Checked && !digitToolStripMenuItem.Checked && !symbolToolStripMenuItem.Checked)
-            {
-                engBoth(dlina, ref iPass);
-            }else if(upperCaseToolStripMenuItem.Checked && !bothToolStripMenuItem2.Checked && !upperCaseToolStripMenuItem1.Checked && !lowerCaseToolStripMenuItem1.Checked && !digitToolStripMenuItem.Checked && !symbolToolStripMenuItem.Checked)
-            {
-                engUpper(dlina, ref iPass);
-            }else if(lowerCaseToolStripMenuItem.Checked && !bothToolStripMenuItem2.Checked && !upperCaseToolStripMenuItem1.Checked && !lowerCaseToolStripMenuItem1.Checked && !digitToolStripMenuItem.Checked && !symbolToolStripMenuItem.Checked)
-            {
-                engLower(dlina, ref iPass);
-            }else if(bothToolStripMenuItem1.Checked && bothToolStripMenuItem2.Checked && !digitToolStripMenuItem.Checked && !symbolToolStripMenuItem.Checked)
-            {
-                engCyrBoth(dlina, ref iPass);
-            }else if(upperCaseToolStripMenuItem.Checked && bothToolStripMenuItem2.Checked && !digitToolStripMenuItem.Checked && !symbolToolStripMenuItem.Checked)
-            {
-                engUpCyrBoth(dlina, ref iPass);
-            }else if(lowerCaseToolStripMenuItem.Checked && bothToolStripMenuItem2.Checked && !digitToolStripMenuItem.Checked && !symbolToolStripMenuItem.Checked)
-            {
-                engLowpCyrUp(dlina, ref iPass);
-            }else if(bothToolStripMenuItem1.Checked && upperCaseToolStripMenuItem1.Checked && !digitToolStripMenuItem.Checked && !symbolToolStripMenuItem.Checked)
-            {
-                engBothCyrUp(dlina, ref iPass);
-            }else if(upperCaseToolStripMenuItem.Checked && upperCaseToolStripMenuItem1.Checked && !digitToolStripMenuItem.Checked && !symbolToolStripMenuItem.Checked)
-            {
-                engUpCyrUp(dlina, ref iPass);
-            }else if(lowerCaseToolStripMenuItem.Checked && upperCaseToolStripMenuItem1.Checked && !digitToolStripMenuItem.Checked && !symbolToolStripMenuItem.Checked)
-            {
-                engLowpCyrUp(dlina, ref iPass);
-            }else if(bothToolStripMenuItem1.Checked && lowerCaseToolStripMenuItem1.Checked && !digitToolStripMenuItem.Checked && !symbolToolStripMenuItem.Checked)
-            {
-                engBothpCyrLow(dlina, ref iPass);
-            }else if(upperCaseToolStripMenuItem.Checked && lowerCaseToolStripMenuItem1.Checked && !digitToolStripMenuItem.Checked && !symbolToolStripMenuItem.Checked)
-            {
-                engUpCyrLow(dlina, ref iPass);
-            }else if(lowerCaseToolStripMenuItem.Checked && lowerCaseToolStripMenuItem1.Checked && !digitToolStripMenuItem.Checked && !symbolToolStripMenuItem.Checked)
-            {
-                engLowCyrLow(dlina, ref iPass);
-            }else if(bothToolStripMenuItem1.Checked && digitToolStripMenuItem.Checked && !upperCaseToolStripMenuItem1.Checked && !bothToolStripMenuItem2.Checked && !lowerCaseToolStripMenuItem1.Checked && !symbolToolStripMenuItem.Checked)
-            {
-                engAllDig(dlina, ref iPass);
-            }else if(upperCaseToolStripMenuItem.Checked && digitToolStripMenuItem.Checked && !upperCaseToolStripMenuItem1.Checked && !bothToolStripMenuItem2.Checked && !lowerCaseToolStripMenuItem1.Checked && !symbolToolStripMenuItem.Checked)
-            {
-                engUpDig(dlina, ref iPass);
-            }else if(lowerCaseToolStripMenuItem.Checked && digitToolStripMenuItem.Checked && !upperCaseToolStripMenuItem1.Checked && !bothToolStripMenuItem2.Checked && !lowerCaseToolStripMenuItem1.Checked && !symbolToolStripMenuItem.Checked)
-            {
-                engLowDig(dlina, ref iPass);
-            }else if(bothToolStripMenuItem1.Checked && symbolToolStripMenuItem.Checked && !bothToolStripMenuItem2.Checked && !upperCaseToolStripMenuItem1.Checked && !lowerCaseToolStripMenuItem1.Checked && !digitToolStripMenuItem.Checked)
-            {
-                engAllSymb(dlina, ref iPass);
-            }else if(upperCaseToolStripMenuItem.Checked && symbolToolStripMenuItem.Checked && !bothToolStripMenuItem2.Checked && !upperCaseToolStripMenuItem1.Checked && !lowerCaseToolStripMenuItem1.Checked && !digitToolStripMenuItem.Checked)
-            {
-                engUpSymb(dlina, ref iPass);
-            }else if(lowerCaseToolStripMenuItem.Checked && symbolToolStripMenuItem.Checked && !bothToolStripMenuItem2.Checked && !upperCaseToolStripMenuItem1.Checked && !lowerCaseToolStripMenuItem1.Checked && !digitToolStripMenuItem.Checked)
-            {
-                engLowSymb(dlina, ref iPass);
-            }else if(bothToolStripMenuItem1.Checked && bothToolStripMenuItem2.Checked && digitToolStripMenuItem.Checked && !symbolToolStripMenuItem.Checked)
-            {
-                engBothСyrBothDig(dlina, ref iPass);
-            }else if(upperCaseToolStripMenuItem.Checked && bothToolStripMenuItem2.Checked && digitToolStripMenuItem.Checked && !symbolToolStripMenuItem.Checked)
-            {
-                engUpСyrBothDig(dlina, ref iPass);
-            }else if(lowerCaseToolStripMenuItem.Checked && bothToolStripMenuItem2.Checked && digitToolStripMenuItem.Checked && !symbolToolStripMenuItem.Checked)
-            {
-                engLowСyrBothDig(dlina, ref iPass);
-            }else if(bothToolStripMenuItem1.Checked && upperCaseToolStripMenuItem1.Checked && digitToolStripMenuItem.Checked && !symbolToolStripMenuItem.Checked)
-            {
-                engBothСyrUpDig(dlina, ref iPass);
-            }else if(upperCaseToolStripMenuItem.Checked && upperCaseToolStripMenuItem1.Checked && digitToolStripMenuItem.Checked && !symbolToolStripMenuItem.Checked)
-            {
-                engUpСyrUpDig(dlina, ref iPass);
-            }else if(lowerCaseToolStripMenuItem.Checked && upperCaseToolStripMenuItem1.Checked && digitToolStripMenuItem.Checked && digitToolStripMenuItem.Checked && !symbolToolStripMenuItem.Checked)
-            {
-                engLowСyrUpDig(dlina, ref iPass);
-            }else if(bothToolStripMenuItem1.Checked && lowerCaseToolStripMenuItem1.Checked && digitToolStripMenuItem.Checked && !symbolToolStripMenuItem.Checked)
-            {
-                engBothСyrLowDig(dlina, ref iPass);
-            }else if(upperCaseToolStripMenuItem.Checked && lowerCaseToolStripMenuItem1.Checked && digitToolStripMenuItem.Checked && !symbolToolStripMenuItem.Checked)
-            {
-                engUpСyrLowDig(dlina, ref iPass);
-            }else if(lowerCaseToolStripMenuItem.Checked && lowerCaseToolStripMenuItem1.Checked && digitToolStripMenuItem.Checked && !symbolToolStripMenuItem.Checked)
-            {
-                engLowСyrLowDig(dlina, ref iPass);
-            }else if(bothToolStripMenuItem1.Checked && bothToolStripMenuItem2.Checked && symbolToolStripMenuItem.Checked && !digitToolStripMenuItem.Checked)
-            {
-                engBothСyrBothSymb(dlina, ref iPass);
-            }else if(upperCaseToolStripMenuItem.Checked && bothToolStripMenuItem2.Checked && symbolToolStripMenuItem.Checked && !digitToolStripMenuItem.Checked)
-            {
-                engUpСyrBothSymb(dlina, ref iPass);
-            }else if(lowerCaseToolStripMenuItem.Checked && bothToolStripMenuItem2.Checked && symbolToolStripMenuItem.Checked && !digitToolStripMenuItem.Checked)
-            {
-                engLowСyrBothSymb(dlina, ref iPass);
-            }else if(bothToolStripMenuItem1.Checked && upperCaseToolStripMenuItem1.Checked && symbolToolStripMenuItem.Checked && !digitToolStripMenuItem.Checked)
-            {
-                engBothСyrUpDig(dlina, ref iPass);
-            }else if(upperCaseToolStripMenuItem.Checked && upperCaseToolStripMenuItem1.Checked && symbolToolStripMenuItem.Checked && !digitToolStripMenuItem.Checked)
-            {
-                engUpСyrUpSymb(dlina, ref iPass);
-            }else if(lowerCaseToolStripMenuItem.Checked && upperCaseToolStripMenuItem1.Checked && symbolToolStripMenuItem.Checked && !digitToolStripMenuItem.Checked)
-            {
-                engLowСyrUpSymb(dlina, ref iPass);
-            }else if(bothToolStripMenuItem1.Checked && lowerCaseToolStripMenuItem1.Checked && symbolToolStripMenuItem.Checked && !digitToolStripMenuItem.Checked)
-            {
-                engBothСyrLowSymb(dlina, ref iPass);
-            }else if(upperCaseToolStripMenuItem.Checked && lowerCaseToolStripMenuItem1.Checked && symbolToolStripMenuItem.Checked && !digitToolStripMenuItem.Checked)
-            {
-                engUpСyrLowSymb(dlina, ref iPass);
-            }else if(lowerCaseToolStripMenuItem.Checked && lowerCaseToolStripMenuItem1.Checked && symbolToolStripMenuItem.Checked && !digitToolStripMenuItem.Checked)
-            {
-                engLowСyrLowSymb(dlina, ref iPass);
-            }else if(bothToolStripMenuItem1.Checked && upperCaseToolStripMenuItem1.Checked && digitToolStripMenuItem.Checked && symbolToolStripMenuItem.Checked)
-            {
-                engBothСyrUpDigSymb(dlina, ref iPass);
-            }else if(upperCaseToolStripMenuItem.Checked && upperCaseToolStripMenuItem1.Checked && digitToolStripMenuItem.Checked && symbolToolStripMenuItem.Checked)
-            {
-                engUpСyrUpDigSymb(dlina, ref iPass);
-            }else if(lowerCaseToolStripMenuItem.Checked && upperCaseToolStripMenuItem1.Checked && digitToolStripMenuItem.Checked && symbolToolStripMenuItem.Checked)
-            {
-                engLowСyrUpDigSymb(dlina, ref iPass);
-            }else if(bothToolStripMenuItem1.Checked && lowerCaseToolStripMenuItem1.Checked && digitToolStripMenuItem.Checked && symbolToolStripMenuItem.Checked)
-            {
-                engBothСyrLowDigSymb(dlina, ref iPass);
-            }else if(upperCaseToolStripMenuItem.Checked && lowerCaseToolStripMenuItem1.Checked && digitToolStripMenuItem.Checked && symbolToolStripMenuItem.Checked)
-            {
-                engUpСyrLowDigSymb(dlina, ref iPass);
-            }else if(lowerCaseToolStripMenuItem.Checked && lowerCaseToolStripMenuItem1.Checked && digitToolStripMenuItem.Checked && symbolToolStripMenuItem.Checked)
-            {
-                engLowСyrLowDigSymb(dlina, ref iPass);
-            }else if(bothToolStripMenuItem2.Checked && !bothToolStripMenuItem1.Checked && !upperCaseToolStripMenuItem.Checked && !lowerCaseToolStripMenuItem.Checked && !digitToolStripMenuItem.Checked && !symbolToolStripMenuItem.Checked)
-            {
-                cyrillicBoth(dlina, ref iPass);
-            }else if(upperCaseToolStripMenuItem1.Checked && !bothToolStripMenuItem1.Checked && !upperCaseToolStripMenuItem.Checked && !lowerCaseToolStripMenuItem.Checked && !digitToolStripMenuItem.Checked && !symbolToolStripMenuItem.Checked)
-            {
-                cyrillicUpper(dlina, ref iPass);
-            }else if(lowerCaseToolStripMenuItem1.Checked && !bothToolStripMenuItem1.Checked && !upperCaseToolStripMenuItem.Checked && !lowerCaseToolStripMenuItem.Checked && !digitToolStripMenuItem.Checked && !symbolToolStripMenuItem.Checked)
-            {
-                cyrillicLower(dlina, ref iPass);
-            }else if(bothToolStripMenuItem2.Checked && digitToolStripMenuItem.Checked && !bothToolStripMenuItem1.Checked && !upperCaseToolStripMenuItem.Checked && !lowerCaseToolStripMenuItem.Checked && !symbolToolStripMenuItem.Checked)
-            {
-                cyrBothDig(dlina, ref iPass);
-            }else if(upperCaseToolStripMenuItem1.Checked && digitToolStripMenuItem.Checked && !bothToolStripMenuItem1.Checked && !upperCaseToolStripMenuItem.Checked && !lowerCaseToolStripMenuItem.Checked && !symbolToolStripMenuItem.Checked)
-            {
-                cyrUpDig(dlina, ref iPass);
-            }else if(lowerCaseToolStripMenuItem1.Checked && digitToolStripMenuItem.Checked && !bothToolStripMenuItem1.Checked && !upperCaseToolStripMenuItem.Checked && !lowerCaseToolStripMenuItem.Checked && !symbolToolStripMenuItem.Checked)
-            {
-                cyrLowDig(dlina, ref iPass);
-            }else if(bothToolStripMenuItem2.Checked && symbolToolStripMenuItem.Checked && !bothToolStripMenuItem1.Checked && !upperCaseToolStripMenuItem.Checked && !lowerCaseToolStripMenuItem.Checked && !digitToolStripMenuItem.Checked)
-            {
-                cyrBothSymb(dlina, ref iPass);
-            }else if(upperCaseToolStripMenuItem1.Checked && symbolToolStripMenuItem.Checked && !bothToolStripMenuItem1.Checked && !upperCaseToolStripMenuItem.Checked && !lowerCaseToolStripMenuItem.Checked && !digitToolStripMenuItem.Checked)
-            {
-                cyrUpSymb(dlina, ref iPass);
-            }else if(lowerCaseToolStripMenuItem1.Checked && symbolToolStripMenuItem.Checked && !bothToolStripMenuItem1.Checked && !upperCaseToolStripMenuItem.Checked && !lowerCaseToolStripMenuItem.Checked && !digitToolStripMenuItem.Checked)
-            {
-                cyrLowSymb(dlina, ref iPass);
-            }else if(bothToolStripMenuItem2.Checked && digitToolStripMenuItem.Checked && symbolToolStripMenuItem.Checked && !bothToolStripMenuItem1.Checked && !upperCaseToolStripMenuItem.Checked && !lowerCaseToolStripMenuItem.Checked)
-            {
-                cyrBothDigSymb(dlina, ref iPass);
-            }else if(upperCaseToolStripMenuItem1.Checked && digitToolStripMenuItem.Checked && symbolToolStripMenuItem.Checked && !bothToolStripMenuItem1.Checked && !upperCaseToolStripMenuItem.Checked && !lowerCaseToolStripMenuItem.Checked)
-            {
-                cyrUpDigSymb(dlina, ref iPass);
-            }else if(lowerCaseToolStripMenuItem1.Checked && digitToolStripMenuItem.Checked && symbolToolStripMenuItem.Checked && !bothToolStripMenuItem1.Checked && !upperCaseToolStripMenuItem.Checked && !lowerCaseToolStripMenuItem.Checked)
-            {
-                cyrLowDigSymb(dlina, ref iPass);
-            }else if(digitToolStripMenuItem.Checked && !bothToolStripMenuItem1.Checked && !upperCaseToolStripMenuItem.Checked && !lowerCaseToolStripMenuItem.Checked && !bothToolStripMenuItem2.Checked && !upperCaseToolStripMenuItem1.Checked && !lowerCaseToolStripMenuItem1.Checked && !symbolToolStripMenuItem.Checked)
-            {
-                dig(dlina, ref iPass);
-            }else if(digitToolStripMenuItem.Checked && symbolToolStripMenuItem.Checked && !bothToolStripMenuItem1.Checked && !upperCaseToolStripMenuItem.Checked && !lowerCaseToolStripMenuItem.Checked && !bothToolStripMenuItem2.Checked && !upperCaseToolStripMenuItem1.Checked && !lowerCaseToolStripMenuItem1.Checked)
-            {
-                digSymb(dlina, ref iPass);
-            }else if(symbolToolStripMenuItem.Checked && !bothToolStripMenuItem1.Checked && !upperCaseToolStripMenuItem.Checked && !lowerCaseToolStripMenuItem.Checked && !bothToolStripMenuItem2.Checked && !upperCaseToolStripMenuItem1.Checked && !lowerCaseToolStripMenuItem1.Checked && !digitToolStripMenuItem.Checked)
-            {
-                symbol(dlina, ref iPass);
-            }else if(bothToolStripMenuItem1.Checked && digitToolStripMenuItem.Checked && symbolToolStripMenuItem.Checked && !bothToolStripMenuItem2.Checked && !upperCaseToolStripMenuItem1.Checked && !lowerCaseToolStripMenuItem1.Checked)
-            {
-                allIn(dlina, ref iPass);
-            }else if(upperCaseToolStripMenuItem.Checked && digitToolStripMenuItem.Checked && symbolToolStripMenuItem.Checked && !bothToolStripMenuItem2.Checked && !upperCaseToolStripMenuItem1.Checked && !lowerCaseToolStripMenuItem1.Checked)
-            {
-                engUpDigSymb(dlina, ref iPass);
-            }else if(lowerCaseToolStripMenuItem1.Checked && digitToolStripMenuItem.Checked && symbolToolStripMenuItem.Checked && !bothToolStripMenuItem2.Checked && !upperCaseToolStripMenuItem1.Checked && !lowerCaseToolStripMenuItem1.Checked)
-            {
-                engLowDigSymb(dlina, ref iPass);
-            }
+            checkBoxMenuSelecting();
         }
     }
 }

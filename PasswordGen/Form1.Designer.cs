@@ -30,7 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.setLengthString = new System.Windows.Forms.TextBox();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
@@ -38,21 +38,21 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.setAutoSave = new System.Windows.Forms.CheckBox();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.allInClusiveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.bothToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fullCheckMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.englishToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.bothToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.upperCaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.lowerCaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.engBothCheckMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.engLargeCheckMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.engSmallCheckMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.cyrillicToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.bothToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.upperCaseToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.lowerCaseToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.digitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.symbolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rusBothCheckMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.rusLargeCheckMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.rusSmallCheckMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.digitCheckMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.symbolCheckMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -66,16 +66,16 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Длина пароля:";
             // 
-            // textBox1
+            // setLengthString
             // 
-            this.textBox1.Location = new System.Drawing.Point(139, 60);
-            this.textBox1.MaxLength = 5;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(55, 20);
-            this.textBox1.TabIndex = 1;
-            this.textBox1.Text = "14";
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
-            this.textBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox1_KeyPress);
+            this.setLengthString.Location = new System.Drawing.Point(139, 60);
+            this.setLengthString.MaxLength = 5;
+            this.setLengthString.Name = "setLengthString";
+            this.setLengthString.Size = new System.Drawing.Size(55, 20);
+            this.setLengthString.TabIndex = 1;
+            this.setLengthString.Text = "14";
+            this.setLengthString.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            this.setLengthString.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox1_KeyPress);
             // 
             // richTextBox1
             // 
@@ -156,16 +156,16 @@
             this.label3.TabIndex = 8;
             this.label3.Text = ".txt";
             // 
-            // checkBox1
+            // setAutoSave
             // 
-            this.checkBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.checkBox1.Location = new System.Drawing.Point(16, 354);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(158, 17);
-            this.checkBox1.TabIndex = 0;
-            this.checkBox1.Text = "автоматически сохранять";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            this.setAutoSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.setAutoSave.Location = new System.Drawing.Point(16, 354);
+            this.setAutoSave.Name = "setAutoSave";
+            this.setAutoSave.Size = new System.Drawing.Size(158, 17);
+            this.setAutoSave.TabIndex = 0;
+            this.setAutoSave.Text = "автоматически сохранять";
+            this.setAutoSave.UseVisualStyleBackColor = true;
+            this.setAutoSave.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // linkLabel1
             // 
@@ -192,112 +192,112 @@
             // allInClusiveToolStripMenuItem
             // 
             this.allInClusiveToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.bothToolStripMenuItem,
+            this.fullCheckMenu,
             this.englishToolStripMenuItem,
             this.cyrillicToolStripMenuItem,
-            this.digitToolStripMenuItem,
-            this.symbolToolStripMenuItem});
+            this.digitCheckMenu,
+            this.symbolCheckMenu});
             this.allInClusiveToolStripMenuItem.Name = "allInClusiveToolStripMenuItem";
             this.allInClusiveToolStripMenuItem.Size = new System.Drawing.Size(64, 20);
             this.allInClusiveToolStripMenuItem.Text = "Наборы";
             // 
-            // bothToolStripMenuItem
+            // fullCheckMenu
             // 
-            this.bothToolStripMenuItem.CheckOnClick = true;
-            this.bothToolStripMenuItem.Name = "bothToolStripMenuItem";
-            this.bothToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.bothToolStripMenuItem.Text = "Все";
-            this.bothToolStripMenuItem.Click += new System.EventHandler(this.bothToolStripMenuItem_Click);
+            this.fullCheckMenu.CheckOnClick = true;
+            this.fullCheckMenu.Name = "fullCheckMenu";
+            this.fullCheckMenu.Size = new System.Drawing.Size(180, 22);
+            this.fullCheckMenu.Text = "Все";
+            this.fullCheckMenu.Click += new System.EventHandler(this.bothToolStripMenuItem_Click);
             // 
             // englishToolStripMenuItem
             // 
             this.englishToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.bothToolStripMenuItem1,
-            this.upperCaseToolStripMenuItem,
-            this.lowerCaseToolStripMenuItem});
+            this.engBothCheckMenu,
+            this.engLargeCheckMenu,
+            this.engSmallCheckMenu});
             this.englishToolStripMenuItem.Name = "englishToolStripMenuItem";
-            this.englishToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.englishToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.englishToolStripMenuItem.Text = "English";
             // 
-            // bothToolStripMenuItem1
+            // engBothCheckMenu
             // 
-            this.bothToolStripMenuItem1.Checked = true;
-            this.bothToolStripMenuItem1.CheckOnClick = true;
-            this.bothToolStripMenuItem1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.bothToolStripMenuItem1.Name = "bothToolStripMenuItem1";
-            this.bothToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
-            this.bothToolStripMenuItem1.Text = "Все";
-            this.bothToolStripMenuItem1.Click += new System.EventHandler(this.bothToolStripMenuItem1_Click);
+            this.engBothCheckMenu.Checked = true;
+            this.engBothCheckMenu.CheckOnClick = true;
+            this.engBothCheckMenu.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.engBothCheckMenu.Name = "engBothCheckMenu";
+            this.engBothCheckMenu.Size = new System.Drawing.Size(180, 22);
+            this.engBothCheckMenu.Text = "Все";
+            this.engBothCheckMenu.Click += new System.EventHandler(this.engBothCheckMenu_Click);
             // 
-            // upperCaseToolStripMenuItem
+            // engLargeCheckMenu
             // 
-            this.upperCaseToolStripMenuItem.CheckOnClick = true;
-            this.upperCaseToolStripMenuItem.Name = "upperCaseToolStripMenuItem";
-            this.upperCaseToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.upperCaseToolStripMenuItem.Text = "Заглавные";
-            this.upperCaseToolStripMenuItem.Click += new System.EventHandler(this.upperCaseToolStripMenuItem_Click);
+            this.engLargeCheckMenu.CheckOnClick = true;
+            this.engLargeCheckMenu.Name = "engLargeCheckMenu";
+            this.engLargeCheckMenu.Size = new System.Drawing.Size(180, 22);
+            this.engLargeCheckMenu.Text = "Заглавные";
+            this.engLargeCheckMenu.Click += new System.EventHandler(this.upperCaseToolStripMenuItem_Click);
             // 
-            // lowerCaseToolStripMenuItem
+            // engSmallCheckMenu
             // 
-            this.lowerCaseToolStripMenuItem.CheckOnClick = true;
-            this.lowerCaseToolStripMenuItem.Name = "lowerCaseToolStripMenuItem";
-            this.lowerCaseToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.lowerCaseToolStripMenuItem.Text = "Прописные";
-            this.lowerCaseToolStripMenuItem.Click += new System.EventHandler(this.lowerCaseToolStripMenuItem_Click);
+            this.engSmallCheckMenu.CheckOnClick = true;
+            this.engSmallCheckMenu.Name = "engSmallCheckMenu";
+            this.engSmallCheckMenu.Size = new System.Drawing.Size(180, 22);
+            this.engSmallCheckMenu.Text = "Прописные";
+            this.engSmallCheckMenu.Click += new System.EventHandler(this.lowerCaseToolStripMenuItem_Click);
             // 
             // cyrillicToolStripMenuItem
             // 
             this.cyrillicToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.bothToolStripMenuItem2,
-            this.upperCaseToolStripMenuItem1,
-            this.lowerCaseToolStripMenuItem1});
+            this.rusBothCheckMenu,
+            this.rusLargeCheckMenu,
+            this.rusSmallCheckMenu});
             this.cyrillicToolStripMenuItem.Name = "cyrillicToolStripMenuItem";
-            this.cyrillicToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.cyrillicToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.cyrillicToolStripMenuItem.Text = "Кирилица";
             // 
-            // bothToolStripMenuItem2
+            // rusBothCheckMenu
             // 
-            this.bothToolStripMenuItem2.CheckOnClick = true;
-            this.bothToolStripMenuItem2.Name = "bothToolStripMenuItem2";
-            this.bothToolStripMenuItem2.Size = new System.Drawing.Size(152, 22);
-            this.bothToolStripMenuItem2.Text = "Все";
-            this.bothToolStripMenuItem2.Click += new System.EventHandler(this.bothToolStripMenuItem2_Click);
+            this.rusBothCheckMenu.CheckOnClick = true;
+            this.rusBothCheckMenu.Name = "rusBothCheckMenu";
+            this.rusBothCheckMenu.Size = new System.Drawing.Size(139, 22);
+            this.rusBothCheckMenu.Text = "Все";
+            this.rusBothCheckMenu.Click += new System.EventHandler(this.bothToolStripMenuItem2_Click);
             // 
-            // upperCaseToolStripMenuItem1
+            // rusLargeCheckMenu
             // 
-            this.upperCaseToolStripMenuItem1.CheckOnClick = true;
-            this.upperCaseToolStripMenuItem1.Name = "upperCaseToolStripMenuItem1";
-            this.upperCaseToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
-            this.upperCaseToolStripMenuItem1.Text = "Заглавные";
-            this.upperCaseToolStripMenuItem1.Click += new System.EventHandler(this.upperCaseToolStripMenuItem1_Click);
+            this.rusLargeCheckMenu.CheckOnClick = true;
+            this.rusLargeCheckMenu.Name = "rusLargeCheckMenu";
+            this.rusLargeCheckMenu.Size = new System.Drawing.Size(139, 22);
+            this.rusLargeCheckMenu.Text = "Заглавные";
+            this.rusLargeCheckMenu.Click += new System.EventHandler(this.upperCaseToolStripMenuItem1_Click);
             // 
-            // lowerCaseToolStripMenuItem1
+            // rusSmallCheckMenu
             // 
-            this.lowerCaseToolStripMenuItem1.CheckOnClick = true;
-            this.lowerCaseToolStripMenuItem1.Name = "lowerCaseToolStripMenuItem1";
-            this.lowerCaseToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
-            this.lowerCaseToolStripMenuItem1.Text = "Прописные";
-            this.lowerCaseToolStripMenuItem1.Click += new System.EventHandler(this.lowerCaseToolStripMenuItem1_Click);
+            this.rusSmallCheckMenu.CheckOnClick = true;
+            this.rusSmallCheckMenu.Name = "rusSmallCheckMenu";
+            this.rusSmallCheckMenu.Size = new System.Drawing.Size(139, 22);
+            this.rusSmallCheckMenu.Text = "Прописные";
+            this.rusSmallCheckMenu.Click += new System.EventHandler(this.lowerCaseToolStripMenuItem1_Click);
             // 
-            // digitToolStripMenuItem
+            // digitCheckMenu
             // 
-            this.digitToolStripMenuItem.Checked = true;
-            this.digitToolStripMenuItem.CheckOnClick = true;
-            this.digitToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.digitToolStripMenuItem.Name = "digitToolStripMenuItem";
-            this.digitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.digitToolStripMenuItem.Text = "Цифры";
-            this.digitToolStripMenuItem.Click += new System.EventHandler(this.digitToolStripMenuItem_Click);
+            this.digitCheckMenu.Checked = true;
+            this.digitCheckMenu.CheckOnClick = true;
+            this.digitCheckMenu.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.digitCheckMenu.Name = "digitCheckMenu";
+            this.digitCheckMenu.Size = new System.Drawing.Size(180, 22);
+            this.digitCheckMenu.Text = "Цифры";
+            this.digitCheckMenu.Click += new System.EventHandler(this.digitToolStripMenuItem_Click);
             // 
-            // symbolToolStripMenuItem
+            // symbolCheckMenu
             // 
-            this.symbolToolStripMenuItem.Checked = true;
-            this.symbolToolStripMenuItem.CheckOnClick = true;
-            this.symbolToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.symbolToolStripMenuItem.Name = "symbolToolStripMenuItem";
-            this.symbolToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.symbolToolStripMenuItem.Text = "Символы";
-            this.symbolToolStripMenuItem.Click += new System.EventHandler(this.symbolToolStripMenuItem_Click);
+            this.symbolCheckMenu.Checked = true;
+            this.symbolCheckMenu.CheckOnClick = true;
+            this.symbolCheckMenu.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.symbolCheckMenu.Name = "symbolCheckMenu";
+            this.symbolCheckMenu.Size = new System.Drawing.Size(180, 22);
+            this.symbolCheckMenu.Text = "Символы";
+            this.symbolCheckMenu.Click += new System.EventHandler(this.symbolToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -305,7 +305,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(295, 395);
             this.Controls.Add(this.linkLabel1);
-            this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.setAutoSave);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.label2);
@@ -313,7 +313,7 @@
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.richTextBox1);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.setLengthString);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -321,6 +321,7 @@
             this.MinimumSize = new System.Drawing.Size(310, 320);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -331,7 +332,7 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox setLengthString;
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
@@ -339,21 +340,21 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox setAutoSave;
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem allInClusiveToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem bothToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fullCheckMenu;
         private System.Windows.Forms.ToolStripMenuItem englishToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cyrillicToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem digitToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem symbolToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem bothToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem upperCaseToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem lowerCaseToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem bothToolStripMenuItem2;
-        private System.Windows.Forms.ToolStripMenuItem upperCaseToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem lowerCaseToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem digitCheckMenu;
+        private System.Windows.Forms.ToolStripMenuItem symbolCheckMenu;
+        private System.Windows.Forms.ToolStripMenuItem engBothCheckMenu;
+        private System.Windows.Forms.ToolStripMenuItem engLargeCheckMenu;
+        private System.Windows.Forms.ToolStripMenuItem engSmallCheckMenu;
+        private System.Windows.Forms.ToolStripMenuItem rusBothCheckMenu;
+        private System.Windows.Forms.ToolStripMenuItem rusLargeCheckMenu;
+        private System.Windows.Forms.ToolStripMenuItem rusSmallCheckMenu;
     }
 }
 
